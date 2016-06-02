@@ -179,10 +179,14 @@ class WPcom_Thumbnail_Editor {
 				$thumbnail = image_downsize( $attachment->ID, $size );
 
 				// Resize the thumbnail to fit into a small box so it's displayed at a reasonable size
-				if( function_exists( 'jetpack_photon_url' ) )
-					$thumbnail_url = jetpack_photon_url( $thumbnail[0], array( 'fit' => array( 250, 250 ) ) );
-				else
+				if( function_exists( 'jetpack_photon_url' ) ) {
+					$thumbnail_url = jetpack_photon_url(
+						$thumbnail[0],
+						apply_filters( 'wpcom_thumbnail_editor_preview_args', array( 'fit' => array( 250, 250 ) ) )
+					);
+				} else {
 					$thumbnail_url = $thumbnail[0];
+				}
 
 				$html .= '<div style="float:left;margin:0 20px 20px 0;min-width:250px;">';
 					$html .= '<a href="' . esc_url( $edit_url ) . '"';
