@@ -166,7 +166,7 @@ class WPcom_Thumbnail_Editor {
 			foreach ( $sizes as $key => $size ) {
 
 				$image_name = $this->use_ratio_map ? $key : $size;
-				$image_name = apply_filters( 'wpcom_thumbnail_editor_image_name', $image_name, $this->use_ratio_map );
+				$image_name = apply_filters( 'wpcom_thumbnail_editor_image_name', $image_name, $key, $size, $this->use_ratio_map );
 
 				$edit_url = admin_url( 'admin.php?action=wpcom_thumbnail_edit&id=' . intval( $attachment->ID ) . '&size=' . urlencode( $size ) );
 
@@ -182,7 +182,7 @@ class WPcom_Thumbnail_Editor {
 				if( function_exists( 'jetpack_photon_url' ) ) {
 					$thumbnail_url = jetpack_photon_url(
 						$thumbnail[0],
-						apply_filters( 'wpcom_thumbnail_editor_preview_args', array( 'fit' => array( 250, 250 ) ) )
+						apply_filters( 'wpcom_thumbnail_editor_preview_args', array( 'fit' => array( 250, 250 ) ), $attachment->ID, $size )
 					);
 				} else {
 					$thumbnail_url = $thumbnail[0];
@@ -753,7 +753,7 @@ class WPcom_Thumbnail_Editor {
 						$thumbnail_size['width'],
 						$thumbnail_size['height'],
 					),
-				), $attachment_id, $thumbnail_size )
+				), $attachment_id, $size, $thumbnail_size )
 			);
 		} else {
 			$url = wp_get_attachment_url( $attachment_id );
