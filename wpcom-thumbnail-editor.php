@@ -515,7 +515,7 @@ class WPcom_Thumbnail_Editor {
 			add_filter( 'intermediate_image_sizes', 'wpcom_intermediate_sizes' );
 		}
 
-		if ( $cropped_only ) {
+		if ( apply_filters( 'wpcom_thumbnail_editor_cropped_only', $cropped_only ) ) {
 			$filtered_sizes = array();
 
 			foreach ( $sizes as $size ) {
@@ -538,7 +538,7 @@ class WPcom_Thumbnail_Editor {
 			$sizes = $filtered_sizes;
 		}
 
-		return $sizes;
+		return apply_filters( 'wpcom_thumbnail_editor_get_intermediate_image_sizes', $sizes, $cropped_only );
 	}
 
 	/**
