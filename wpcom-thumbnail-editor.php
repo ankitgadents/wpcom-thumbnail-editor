@@ -48,7 +48,7 @@ class WPcom_Thumbnail_Editor {
 
 		// When a thumbnail is requested, intercept the request and return the custom thumbnail
 		if ( ! function_exists( 'is_private_blog' ) || ( function_exists( 'is_private_blog' )
-			&& ( ! is_private_blog()|| true === $this->allow_private_blogs ) ) ) {
+			&& ( ! is_private_blog() || true === $this->allow_private_blogs ) ) ) {
 			add_filter( 'image_downsize', array( &$this, 'get_thumbnail_url' ), 15, 3 );
 		}
 
