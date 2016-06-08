@@ -39,8 +39,10 @@ class WPcom_Thumbnail_Editor {
 		) );
 
 		// When a thumbnail is requested, intercept the request and return the custom thumbnail
-		if ( ! function_exists( 'is_private_blog' ) || ( function_exists( 'is_private_blog' ) && ! is_private_blog() ) )
+		if ( ( ! function_exists( 'is_private_blog' ) || ( function_exists( 'is_private_blog' ) && ! is_private_blog() ) )
+			 || ( defined( 'WPCOM_IS_VIP_ENV' ) && true === WPCOM_IS_VIP_ENV ) ) {
 			add_filter( 'image_downsize', array( &$this, 'get_thumbnail_url' ), 15, 3 );
+		}
 
 		// Admin-only hooks
 		if ( is_admin() ) {
@@ -146,7 +148,7 @@ class WPcom_Thumbnail_Editor {
 			return '<p>' . __( 'No thumbnail sizes could be found that are cropped. For now this functionality only supports cropped thumbnails.', 'wpcom-thumbnail-editor' ) . '</p>';
 
 		// Photon has to be able to access the source images
-		if ( function_exists( 'is_private_blog' ) && is_private_blog() ) {
+		if ( function_exists( 'is_private_blog' ) && is_private_blog() && ( ! defined( 'WPCOM_IS_VIP_ENV' ) || true !== WPCOM_IS_VIP_ENV ) ) {
 			return '<p>' . sprintf( __( "The WordPress.com VIP custom thumbnail cropping functionality doesn't work on sites <a href='%s'>marked as private</a>.", 'wpcom-thumbnail-editor' ), admin_url( 'options-reading.php' ) ) . '</p>';
 		} elseif ( 'localhost' == $_SERVER['HTTP_HOST'] ) {
 			return '<p>' . __( "The WordPress.com VIP custom thumbnail cropping functionality needs the images be publicly accessible in order to work, which isn't possible when you're developing locally.", 'wpcom-thumbnail-editor' ) . '</p>';
