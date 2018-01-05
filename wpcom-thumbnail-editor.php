@@ -733,10 +733,11 @@ class WPcom_Thumbnail_Editor {
 	 */
 	public function get_thumbnail_url( $existing_resize, $attachment_id, $size ) {
 		
-		//On dev sites, Jetpack is often active but Photon will not work because the content files are not accessible to the public internet.
-		//Right now, a broken image is displayed when this plugin is active and a thumbnail has been edited. This will allow the unmodified image to be displayed.
-		if( !function_exists( 'jetpack_photon_url' ) ||  defined('JETPACK_DEV_DEBUG') )
+		// On dev sites, Jetpack is often active but Photon will not work because the content files are not accessible to the public internet.
+		// Right now, a broken image is displayed when this plugin is active and a thumbnail has been edited. This will allow the unmodified image to be displayed.
+		if ( ! function_exists( 'jetpack_photon_url' ) || ( true === defined( 'JETPACK_DEV_DEBUG' ) && true === constant( 'JETPACK_DEV_DEBUG' ) ) ) {
 			return $existing_resize;
+		}
 			
 		// Named sizes only
 		if ( is_array( $size ) ) {
